@@ -1,0 +1,23 @@
+name: Hello World Workflow
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:  # Позволяет запускать вручную из GitHub UI
+
+jobs:
+  say-hello:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Print system info
+        run: |
+          echo "Операционная система: $(uname -a)"
+          echo "Версия Python: $(python3 --version)"
+          echo "Версия Docker: $(docker --version)"
+      
+      - name: List files
+        run: ls -la
