@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - main
-  workflow_dispatch:  # Позволяет запускать вручную из GitHub UI
+  #workflow_dispatch:  # Позволяет запускать вручную из GitHub UI
 
 jobs:
   say-hello:
