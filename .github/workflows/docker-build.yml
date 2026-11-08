@@ -1,0 +1,37 @@
+name: Build Docker Image
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      
+      - name: Extract commit SHA
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+      
+      - name: Build Docker image
+        run: |
+          docker build -t my-app:latest .
+          docker build -t my-app:${{ steps.vars.outputs.sha_short }} .
+      
+      - name: List Docker images
+        run: docker images | grep my-app
+      
+      - name: Test container startup
+        run: |
+          docker run -d --name test-container -p 5000:5000 my-app:latest
+          sleep 5
+          docker ps | grep test-container
+          docker stop test-container
+          docker rm test-container
